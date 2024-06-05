@@ -1,6 +1,6 @@
 const apiKey = 'd7330e85c477585e58055d5382f4bd6f';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-
+var arr= JSON.parse(localStorage.getItem("recent_city")) || [];
 const locationInput = document.getElementById('locationInput');
 const searchButton = document.getElementById('searchButton');
 const locationBtn = document.getElementById('location');
@@ -19,8 +19,10 @@ searchButton.addEventListener('click', () => {
     const location = locationInput.value;
     if (location) {
         fetchWeather(location);
-        fetchWeatherforecast(location)
+        fetchWeatherforecast(location);
+        
     }
+    
 });
 
 function fetchWeather(location,lat,long) {
@@ -30,7 +32,8 @@ function fetchWeather(location,lat,long) {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+               
+                locationElement.innerHTML="";
                 locationElement.textContent = data.name;
                 temperatureElement.textContent = `${Math.round(data.main.temp)}`;
                 const today= new Date();
@@ -46,7 +49,13 @@ function fetchWeather(location,lat,long) {
                 pressureElement.textContent = data.main.pressure;
                 windElement.textContent = data.wind.speed;
                 mainiconElement.src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
-                localStorage.setItem("recentcity", location)
+                if(!arr.includes(location)){
+                arr.push(location);
+            }
+                console.log(arr);
+                const myJSON = JSON.stringify(arr);
+                localStorage.setItem("recentcity", location);
+                localStorage.setItem("recent_city", myJSON);
             })
             .catch(error => {
                 console.error('Error fetching weather data:', error);
@@ -117,7 +126,7 @@ function fetchWeatherforecast(location){
                 const date1= document.getElementById("date1")
 
                 const today= new Date();
-                let arrayDay=["Sunday","Monday","Tuesday","Wednesday","Thrusday", "Friday" ,'Saturday','Sunday', "Monday","Tuesday","Wednesday","Thrusday", "Friday" ,'Saturday']
+                let arrayDay=["Sunday","Monday","Tuesday","Wednesday","Thursday", "Friday" ,'Saturday','Sunday', "Monday","Tuesday","Wednesday","Thursday", "Friday" ,'Saturday']
                 day1.innerHTML= arrayDay[today.getDay()+1] ;
                 date1.innerHTML= data.list[9].dt_txt.slice(0,10);
                 
@@ -203,6 +212,31 @@ function fetchWeatherforecast(location){
     
 }
 window.onload= ()=>{
-   var q = localStorage.getItem("recentcity")
-   if(q){fetchWeather(q)}
+   var q = localStorage.getItem("recentcity");
+   if(q){fetchWeather(q); fetchWeatherforecast(q);}
 }
+function dropdown(){
+    const drop =document.createElement('div');
+    drop.classList.remove("hidden")
+   
+    arr.forEach((data,index) => {
+     const down =document.createElement('p');
+     down.textContent=data;
+  
+     drop.appendChild(down);
+     down.addEventListener("click",()=>{
+        locationInput.value=arr[index];
+        drop.classList.add("hidden");
+     })
+
+    })
+
+        dropdown1.appendChild(drop);
+    
+}
+const dropdown1=document.getElementById("dropdown");
+locationInput.addEventListener( "click", ()=>{
+    dropdown1.innerHTML="";
+    dropdown();
+
+} )

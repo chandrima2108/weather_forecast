@@ -1,23 +1,25 @@
-<!-- src/main/resources/templates/weather.html -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="stylesheet" href="output.css">
+    
 </head>
 <body class="bg-slate-400 ">
     <header class="flex justify-between ">
         <h1 class="text-white text-2xl m-7">Weather <span  class="bg-black rounded-lg p-3"> App</span></h1>
-        <div >
+        <div id="search" >
         <input class="m-5 p-3 rounded-[40px] text-[18px] h-11 " id="locationInput" type="search" placeholder="Enter a city">
         <button class="p-3 bg-white rounded-[50%] my-5 h-11 " id="searchButton"><img class="h-5 w-5 " src="./images/search.png" alt="search icon"></button>
-        </div>
+    <div  class="bg-white rounded-xl w-[140px] shadow-[5px_5px] shadow-lime-200 absolute z-20 " id="dropdown"></div>    
+    </div>
         
         <button class="p-2 rounded-lg m-0" id="location"> <img class="h-11 w-11 my-5 rounded-[50%]" src="./images/location.jpg" alt="search icon"></button>
         
     </header>
-    <main class=" flex justify-center items-center">
+    <main class=" flex justify-center items-center -z-50">
          <div class="bg-gradient-to-r from-lime-300 to-green-600  p-5 rounded-2xl h-[600px] w-[700px] flex flex-col justify-center items-center relative">
         <h1 id="city"  class="text-3xl text-white absolute top-5 right-5 "><strong>Jaipur</strong></h1>
         <div id="date" class="absolute top-16 right-5 text-lg text-white">02-06-2024</div>
