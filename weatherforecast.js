@@ -65,7 +65,7 @@ function fetchWeather(location,lat,long) {
                 localStorage.setItem("recent_city", myJSON);
             })
             .catch(error => {
-                ('Error fetching weather data:', error);
+                alert('Error fetching weather data:', error);
             });
     }
     else{
@@ -90,7 +90,7 @@ function fetchWeather(location,lat,long) {
     
             })
             .catch(error => {
-               console.log('Error fetching weather data:', error);
+               alert('Error fetching weather data:', error);
             });
         
     }
