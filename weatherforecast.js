@@ -13,8 +13,13 @@ const minElement=document.getElementById('min');
 const maxElement=document.getElementById('max');
 const humidityElement=document.getElementById('humidity');
 const windElement=document.getElementById('wind');
-const pressureElement=document.getElementById('pressure');
 const mainiconElement=document.getElementById('mainicon');
+const mainiconElement1=document.getElementById('mainicon1');
+const mainiconElement2=document.getElementById('mainicon2');
+const mainiconElement3=document.getElementById('mainicon3');
+const mainiconElement4=document.getElementById('mainicon4');
+const mainiconElement5=document.getElementById('mainicon5');
+//calling the function on button click 
 searchButton.addEventListener('click', () => {
     const location = locationInput.value;
     if (location) {
@@ -24,7 +29,7 @@ searchButton.addEventListener('click', () => {
     }
     
 });
-
+//FUNCTION to fetch the data FROM API and show in HTML
 function fetchWeather(location,lat,long) {
     if(location){
         const url = `${apiUrl}?q=${location}&appid=${apiKey}&units=metric`;
@@ -32,23 +37,25 @@ function fetchWeather(location,lat,long) {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-               
+                
                 locationElement.innerHTML="";
                 locationElement.textContent = data.name;
                 temperatureElement.textContent = `${Math.round(data.main.temp)}`;
                 const today= new Date();
-                let arrayDay=["Sunday","Monday","Tuesday","Thrusday", "friday" ,'Saturday']
+                let arrayDay=["Sunday","Monday","Tuesday","Wednesday","Thrusday", "friday" ,'Saturday']
                 const day= arrayDay[today.getDay()] ;
                 const date= `${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
                 dateElement.textContent = date;
                 descriptionElement.textContent = data.weather[0].description;
-                dayElement.textContent = day;
+                console.log(today.getDay());
+                
+                dayElement.textContent= day;
                 minElement.textContent = data.main.temp_min;
                 maxElement.textContent = data.main.temp_max;
                 humidityElement.textContent = data.main.humidity;
-                pressureElement.textContent = data.main.pressure;
+                console.log(mainiconElement);
                 windElement.textContent = data.wind.speed;
-                mainiconElement.src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
+                mainiconElement.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`;
                 if(!arr.includes(location)){
                 arr.push(location);
             }
@@ -58,7 +65,7 @@ function fetchWeather(location,lat,long) {
                 localStorage.setItem("recent_city", myJSON);
             })
             .catch(error => {
-                console.error('Error fetching weather data:', error);
+                ('Error fetching weather data:', error);
             });
     }
     else{
@@ -69,7 +76,7 @@ function fetchWeather(location,lat,long) {
                 locationElement.textContent = data.name;
                 temperatureElement.textContent = Math.round(data.main.temp);
                 const today= new Date();
-                let arrayDay=["Sunday","Monday","Tuesday","Thrusday", "friday" ,'Saturday']
+                let arrayDay=["Sunday","Monday","Tuesday","Wednesday","Thrusday", "Friday" ,'Saturday']
                 const day= arrayDay[today.getDay()] ;
                 const date= `${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
                 dateElement.textContent = date;
@@ -78,18 +85,18 @@ function fetchWeather(location,lat,long) {
                 minElement.textContent = data.main.temp_min;
                 maxElement.textContent = data.main.temp_max;
                 humidityElement.textContent = data.main.humidity;
-                pressureElement.textContent = data.main.pressure;
                 windElement.textContent = data.wind.speed;
-                mainiconElement.src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
+                mainiconElement.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`;
     
             })
             .catch(error => {
-                console.error('Error fetching weather data:', error);
+               console.log('Error fetching weather data:', error);
             });
         
     }
     
 }
+//function to get latitude and longitude from browser
 function onPositionUpdate(position)
             {
                 var lat = position.coords.latitude;
@@ -103,12 +110,13 @@ function getLocation(){
                
             }
             else
-                alert("navigator.geolocation is not available");
+                console.log("navigator.geolocation is not available");
             }
             locationBtn.addEventListener('click', 
                 getLocation
 
-            )
+           )
+    // To fetch extended 5 day forecast data
 function fetchWeatherforecast(location){
     if(location){
         const url2 = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}&units=metric`;
@@ -135,6 +143,7 @@ function fetchWeatherforecast(location){
                temp_min1.innerHTML= data.list[9].main.temp_min;
                windspeed1.innerHTML= data.list[9].wind.speed;
                humidity1.innerHTML= data.list[9].main.humidity;
+               mainiconElement1.src=`https://openweathermap.org/img/wn/${data.list[9].weather[0].icon}@4x.png`
                 const temp2= document.getElementById("temp2")
                 const temp_max2= document.getElementById("temp_max2")
                 const temp_min2= document.getElementById("temp_min2")
@@ -152,6 +161,7 @@ function fetchWeatherforecast(location){
                temp_min2.innerHTML= data.list[18].main.temp_min;
                windspeed2.innerHTML= data.list[18].wind.speed;
                humidity2.innerHTML= data.list[18].main.humidity;
+               mainiconElement2.src=`https://openweathermap.org/img/wn/${data.list[18].weather[0].icon}@4x.png`;
                 const temp3= document.getElementById("temp3")
                 const temp_max3= document.getElementById("temp_max3")
                 const temp_min3= document.getElementById("temp_min3")
@@ -169,6 +179,7 @@ function fetchWeatherforecast(location){
                temp_min3.innerHTML= data.list[26].main.temp_min;
                windspeed3.innerHTML= data.list[26].wind.speed;
                humidity3.innerHTML= data.list[26].main.humidity;
+               mainiconElement3.src=`https://openweathermap.org/img/wn/${data.list[26].weather[0].icon}@4x.png`
                 const temp4= document.getElementById("temp4")
                 const temp_max4= document.getElementById("temp_max4")
                 const temp_min4= document.getElementById("temp_min4")
@@ -178,14 +189,15 @@ function fetchWeatherforecast(location){
                 const date4= document.getElementById("date4")
 
                 
-                day4.innerHTML= arrayDay[today.getDay()+3] ;
-                date4.innerHTML= data.list[28].dt_txt.slice(0,10);
+                day4.innerHTML= arrayDay[today.getDay()+4] ;
+                date4.innerHTML= data.list[29].dt_txt.slice(0,10);
                 
-               temp4.innerHTML=Math.round(data.list[28].main.temp)+'°C';
-               temp_max4.innerHTML= data.list[28].main.temp_max;
-               temp_min4.innerHTML= data.list[28].main.temp_min;
-               windspeed4.innerHTML= data.list[28].wind.speed;
-               humidity4.innerHTML= data.list[28].main.humidity;
+               temp4.innerHTML=Math.round(data.list[29].main.temp)+'°C';
+               temp_max4.innerHTML= data.list[29].main.temp_max;
+               temp_min4.innerHTML= data.list[29].main.temp_min;
+               windspeed4.innerHTML= data.list[29].wind.speed;
+               humidity4.innerHTML= data.list[29].main.humidity;
+               mainiconElement4.src=`https://openweathermap.org/img/wn/${data.list[29].weather[0].icon}@4x.png`
                 const temp5= document.getElementById("temp5")
                 const temp_max5= document.getElementById("temp_max5")
                 const temp_min5= document.getElementById("temp_min5")
@@ -195,15 +207,16 @@ function fetchWeatherforecast(location){
                 const date5= document.getElementById("date5")
 
                 
-                day5.innerHTML= arrayDay[today.getDay()+4] ;
-                date5.innerHTML= data.list[36].dt_txt.slice(0,10);
+                day5.innerHTML= arrayDay[today.getDay()+5] ;
+                date5.innerHTML= data.list[37].dt_txt.slice(0,10);
                 
-               temp5.innerHTML=Math.round(data.list[36].main.temp)+'°C';
-               temp_max5.innerHTML= data.list[36].main.temp_max;
-               temp_min5.innerHTML= data.list[36].main.temp_min;
-               windspeed5.innerHTML= data.list[36].wind.speed;
-               humidity5.innerHTML= data.list[36].main.humidity;
-              
+               temp5.innerHTML=Math.round(data.list[37].main.temp)+'°C';
+               temp_max5.innerHTML= data.list[37].main.temp_max;
+               temp_min5.innerHTML= data.list[37].main.temp_min;
+               windspeed5.innerHTML= data.list[37].wind.speed;
+               humidity5.innerHTML= data.list[37].main.humidity;
+               mainiconElement5.src=`https://openweathermap.org/img/wn/${data.list[37].weather[0].icon}@4x.png`
+               console.log(data);
             })
             .catch(error => {
                 console.error('Error fetching weather data:', error);
@@ -211,18 +224,20 @@ function fetchWeatherforecast(location){
     }
     
 }
+// showing data of recent city 
 window.onload= ()=>{
    var q = localStorage.getItem("recentcity");
    if(q){fetchWeather(q); fetchWeatherforecast(q);}
 }
+//dropdown for recent city search
 function dropdown(){
     const drop =document.createElement('div');
-    drop.classList.remove("hidden")
-   
+    drop.classList.remove("hidden");
     arr.forEach((data,index) => {
      const down =document.createElement('p');
      down.textContent=data;
-  
+     down.classList.add("mx-4")
+     down.classList.add("cursor-pointer")
      drop.appendChild(down);
      down.addEventListener("click",()=>{
         locationInput.value=arr[index];
@@ -238,5 +253,10 @@ const dropdown1=document.getElementById("dropdown");
 locationInput.addEventListener( "click", ()=>{
     dropdown1.innerHTML="";
     dropdown();
+
+} )
+// disappear the dropdown on focusout
+locationInput.addEventListener( "focusout", ()=>{
+    setTimeout(()=>dropdown1.innerHTML="",500)
 
 } )
